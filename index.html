@@ -3,1062 +3,487 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <title>Loading Product...</title>
-    <meta name="description" content="Dapatkan produk premium terbaik dengan harga promo khusus hari ini. Pesan mudah langsung via WhatsApp.">
-    <meta name="keywords" content="landing page, produk premium, beli online, belanja hemat">
-    
-    <meta property="og:type" content="website">
-    <meta property="og:title" content="Produk Premium Pilihan Terbaik">
-    <meta property="og:description" content="Dapatkan produk premium terbaik dengan harga promo khusus hari ini.">
-    <meta property="og:image" content="">
-    
-    <meta name="twitter:card" content="summary_large_image">
-    
-    <link rel="icon" type="image/png" href="https://cdn-icons-png.flaticon.com/512/3081/3081559.png">
-    
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <title>Memuat Toko...</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
+    
     <style>
         :root {
-            --primary: #0A2540;
-            --secondary: #D4AF37;
-            --bg: #FFFFFF;
-            --text: #0D0D0D;
-            --gray-light: #F4F6F8;
-            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            --bg-dark: #0D0D0D;
+            --accent-gold: #D4AF37;
+            --accent-gold-hover: #AA8C2C;
+            --navy-blue: #0A2540;
+            --text-white: #FFFFFF;
+            --text-muted: #A0AEC0;
+            --card-bg: #1A1A1A;
+            --border-color: #2D2D2D;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Poppins', sans-serif;
-            scroll-behavior: smooth;
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; scroll-behavior: smooth; }
+        body { background-color: var(--bg-dark); color: var(--text-white); overflow-x: hidden; line-height: 1.6; }
+        
+        /* Preloader CSS */
+        #preloader {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: var(--bg-dark); z-index: 9999;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
         }
-
-        body {
-            background-color: var(--bg);
-            color: var(--text);
-            overflow-x: hidden;
-        }
-
-        /* Loading Skeleton Utilities */
-        .skeleton {
-            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
-            background-size: 200% 100%;
-            animation: loading-shimmer 1.5s infinite;
-        }
-
-        @keyframes loading-shimmer {
-            0% { background-position: 200% 0; }
-            100% { background-position: -200% 0; }
-        }
-
-        #page-loader {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: var(--primary);
-            z-index: 9999;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            transition: opacity 0.5s ease;
-        }
-
         .spinner {
-            width: 50px; height: 50px;
-            border: 5px solid rgba(255,255,255,0.1);
-            border-top-color: var(--secondary);
-            border-radius: 50%;
-            animation: spin 1s infinite linear;
+            width: 50px; height: 50px; border: 5px solid rgba(212, 175, 55, 0.2);
+            border-radius: 50%; border-top-color: var(--accent-gold);
+            animation: spin 1s ease-in-out infinite; margin-bottom: 20px;
         }
+        .blink-text { animation: blink 1.5s infinite; color: var(--accent-gold); font-weight: 600; letter-spacing: 1px; }
 
         @keyframes spin { to { transform: rotate(360deg); } }
+        @keyframes blink { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
 
-        /* Error Banner */
-        #error-notification {
-            display: none;
-            position: fixed;
-            top: 20px; left: 50%; transform: translateX(-50%);
-            background: #d9534f; color: white;
-            padding: 15px 30px; border-radius: 8px;
-            z-index: 10000; box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-        }
-
-        /* Sticky Navbar / Header CTA */
-        header {
-            position: sticky; top: 0; z-index: 900;
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border-bottom: 1px solid rgba(0,0,0,0.05);
-            box-shadow: 0 2px 10px rgba(0,0,0,0.02);
-        }
-
-        .nav-container {
-            max-width: 1200px; margin: 0 auto;
-            padding: 15px 20px;
-            display: flex; justify-content: space-between; align-items: center;
-        }
-
-        .logo { font-weight: 700; color: var(--primary); font-size: 1.3rem; }
-        
-        .sticky-btn {
-            background: var(--secondary); color: var(--primary);
-            padding: 8px 20px; border-radius: 30px; font-weight: 600;
-            text-decoration: none; font-size: 0.9rem; transition: var(--transition);
-            box-shadow: 0 4px 6px rgba(212, 175, 55, 0.2);
-        }
-        .sticky-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 12px rgba(212, 175, 55, 0.4); }
+        /* Container Layout */
+        .container { width: 100%; max-width: 600px; margin: 0 auto; background: var(--bg-dark); min-height: 100vh; position: relative; padding-bottom: 100px; }
 
         /* Hero Section */
-        .hero-section {
-            position: relative; min-height: 80vh;
-            background-size: cover; background-position: center;
-            display: flex; align-items: center; color: white;
-            padding: 60px 20px;
+        .hero {
+            position: relative; height: 320px; background-size: cover; background-position: center;
+            display: flex; flex-direction: column; justify-content: flex-end; padding: 20px;
+            background-image: linear-gradient(to top, rgba(13,13,13,1) 10%, rgba(13,13,13,0.4) 60%, rgba(13,13,13,0.1)), url('https://images.unsplash.com/photo-1617897903246-719242758050?q=80&w=1920');
         }
+        .hero-title { font-size: 24pt; font-weight: 700; color: var(--text-white); text-shadow: 0 2px 10px rgba(0,0,0,0.8); }
+        .hero-badge { background: var(--accent-gold); color: var(--bg-dark); font-size: 9pt; font-weight: 700; padding: 4px 10px; width: fit-content; border-radius: 4px; margin-bottom: 8px; text-transform: uppercase; }
 
-        .hero-overlay {
-            position: absolute; top:0; left:0; width:100%; height:100%;
-            background: linear-gradient(135deg, rgba(10,37,64,0.95) 0%, rgba(10,37,64,0.7) 100%);
-            z-index: 1;
-        }
+        /* Content Wrapper */
+        .main-content { padding: 20px; }
+        .product-price { font-size: 20pt; color: var(--accent-gold); font-weight: 700; margin: 10px 0; }
+        .product-desc { color: var(--text-muted); font-size: 10.5pt; margin-bottom: 25px; text-align: justify; }
 
-        .hero-content {
-            position: relative; z-index: 2;
-            max-width: 800px; margin: 0 auto; text-align: center;
-        }
+        /* Media Section (Images & Video) */
+        .media-slider { display: flex; overflow-x: auto; gap: 12px; margin-bottom: 25px; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; }
+        .media-slider::-webkit-scrollbar { display: none; }
+        .media-item { flex: 0 0 85%; width: 85%; scroll-snap-align: center; border-radius: 12px; overflow: hidden; border: 1px solid var(--border-color); background: var(--card-bg); height: 250px; }
+        .media-item img { width: 100%; height: 100%; object-fit: cover; }
+        .media-item video { width: 100%; height: 100%; object-fit: cover; }
 
-        .badge-promo {
-            background: var(--secondary); color: var(--primary);
-            padding: 6px 16px; border-radius: 20px; display: inline-block;
-            font-weight: 700; font-size: 0.85rem; text-transform: uppercase;
-            margin-bottom: 20px; letter-spacing: 1px;
-            animation: pulse 2s infinite;
-        }
+        /* Section Cards */
+        .section-card { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 12px; padding: 20px; margin-bottom: 25px; }
+        .section-title { font-size: 13pt; font-weight: 600; color: var(--text-white); margin-bottom: 15px; border-left: 4px solid var(--accent-gold); padding-left: 10px; }
 
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
-        }
+        /* Bullet Features */
+        .feature-list { list-style: none; }
+        .feature-list li { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 12px; font-size: 10pt; color: var(--text-white); }
+        .feature-list li i { color: var(--accent-gold); margin-top: 3px; }
 
-        .hero-content h1 { font-size: 2.8rem; font-weight: 700; margin-bottom: 20px; line-height: 1.2; }
-        
-        .price-box {
-            display: flex; justify-content: center; align-items: center; gap: 15px;
-            margin-bottom: 25px; font-size: 1.5rem;
-        }
-        .price-original { text-decoration: line-through; color: rgba(255,255,255,0.6); font-size: 1.2rem; }
-        .price-promo { color: var(--secondary); font-weight: 700; font-size: 2rem; }
+        /* Order Form & Inputs */
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; font-size: 9.5pt; font-weight: 600; margin-bottom: 6px; color: var(--text-muted); }
+        .form-control { width: 100%; background: #222; border: 1px solid var(--border-color); color: var(--text-white); padding: 12px 15px; border-radius: 8px; font-size: 10pt; transition: all 0.3s ease; }
+        .form-control:focus { outline: none; border-color: var(--accent-gold); box-shadow: 0 0 5px rgba(212,175,55,0.3); }
+        select.form-control { cursor: pointer; }
 
-        .hero-btns { display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; }
-        
-        .btn {
-            padding: 14px 30px; border-radius: 8px; font-weight: 600; text-decoration: none;
-            cursor: pointer; transition: var(--transition); display: inline-flex; align-items: center; gap: 10px;
-            border: none; font-size: 1rem;
-        }
-        .btn-primary { background: var(--secondary); color: var(--primary); }
-        .btn-primary:hover { background: #ebd273; transform: translateY(-3px); }
-        .btn-outline { background: transparent; color: white; border: 2px solid white; }
-        .btn-outline:hover { background: white; color: var(--primary); transform: translateY(-3px); }
+        /* Quantity Control */
+        .qty-container { display: flex; align-items: center; background: #222; border: 1px solid var(--border-color); border-radius: 8px; width: fit-content; }
+        .qty-btn { background: transparent; border: none; color: var(--text-white); width: 40px; height: 40px; font-size: 14pt; cursor: pointer; transition: background 0.2s; }
+        .qty-btn:hover { background: rgba(255,255,255,0.05); }
+        .qty-input { width: 50px; text-align: center; border: none; background: transparent; color: var(--text-white); font-size: 11pt; font-weight: bold; pointer-events: none; }
 
-        /* Main Container for Layout split Desktop */
-        .main-layout {
-            max-width: 1200px; margin: 60px auto; padding: 0 20px;
-            display: grid; grid-template-columns: 1fr; gap: 40px;
-        }
+        /* Action Buttons */
+        .btn-primary { width: 100%; background: linear-gradient(135deg, var(--accent-gold), var(--accent-gold-hover)); color: var(--bg-dark); font-weight: 700; border: none; padding: 15px; border-radius: 8px; font-size: 11pt; cursor: pointer; transition: transform 0.2s ease, opacity 0.2s; display: flex; justify-content: center; align-items: center; gap: 10px; box-shadow: 0 4px 15px rgba(212,175,55,0.2); }
+        .btn-primary:active { transform: scale(0.98); }
+        .btn-secondary { width: 100%; background: transparent; border: 1px dashed var(--accent-gold); color: var(--accent-gold); font-weight: 600; padding: 12px; border-radius: 8px; font-size: 10pt; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 8px; margin-top: 15px; transition: all 0.2s; }
+        .btn-secondary:hover { background: rgba(212,175,55,0.1); }
 
-        @media(min-width: 992px) {
-            .main-layout { grid-template-columns: 1.2fr 1fr; gap: 60px; }
-        }
+        /* Social Media Icons */
+        .social-container { display: flex; justify-content: center; gap: 20px; margin-top: 30px; }
+        .social-icon { width: 40px; height: 40px; border-radius: 50%; background: var(--card-bg); border: 1px solid var(--border-color); display: flex; justify-content: center; align-items: center; color: var(--text-muted); text-decoration: none; transition: all 0.3s ease; }
+        .social-icon:hover { color: var(--accent-gold); border-color: var(--accent-gold); transform: translateY(-3px); }
 
-        /* Gallery System */
-        .gallery-container { position: relative; }
-        .main-img-wrapper {
-            width: 100%; aspect-ratio: 1/1; border-radius: 12px;
-            overflow: hidden; background: var(--gray-light);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.08); cursor: zoom-in;
-            position: relative;
-        }
-        .main-img-wrapper img {
-            width: 100%; height: 100%; object-fit: cover;
-            transition: transform 0.5s ease;
-        }
-        .main-img-wrapper:hover img { transform: scale(1.05); }
+        /* Bottom Floating Bar / Sidebar Panel Basket */
+        .basket-summary-panel { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 600px; background: rgba(26,26,26,0.95); backdrop-filter: blur(10px); border-top: 1px solid var(--border-color); padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; z-index: 999; box-shadow: 0 -5px 25px rgba(0,0,0,0.5); }
+        .basket-info { display: flex; flex-direction: column; }
+        .basket-label { font-size: 8.5pt; color: var(--text-muted); text-transform: uppercase; }
+        .basket-total { font-size: 14pt; font-weight: 700; color: var(--accent-gold); }
+        .basket-btn { background: var(--navy-blue); color: var(--text-white); font-weight: 600; border: none; padding: 10px 20px; border-radius: 6px; font-size: 9.5pt; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: opacity 0.2s; }
+        .basket-btn:hover { opacity: 0.9; }
 
-        .thumbnails-grid {
-            display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 15px;
-        }
-        .thumb-box {
-            aspect-ratio: 1/1; border-radius: 8px; overflow: hidden;
-            background: var(--gray-light); cursor: pointer; border: 2px solid transparent;
-            transition: var(--transition);
-        }
-        .thumb-box.active { border-color: var(--secondary); }
-        .thumb-box img { width: 100%; height: 100%; object-fit: cover; }
-
-        /* Lightbox Modal */
-        .lightbox {
-            position: fixed; top:0; left:0; width:100%; height:100%;
-            background: rgba(10,37,64,0.95); z-index: 2000;
-            display: none; justify-content: center; align-items: center; padding: 20px;
-        }
-        .lightbox.active { display: flex; }
-        .lightbox img { max-width: 90%; max-height: 80vh; border-radius: 8px; box-shadow: 0 5px 25px rgba(0,0,0,0.3); }
-        .lightbox-close {
-            position: absolute; top: 30px; right: 30px; color: white;
-            font-size: 2rem; cursor: pointer; transition: var(--transition);
-        }
-
-        /* Detail & Spec Section */
-        .detail-card {
-            background: #ffffff; border-radius: 16px;
-            padding: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.03);
-            border: 1px solid rgba(0,0,0,0.05);
-        }
-        .stock-status {
-            display: inline-flex; align-items: center; gap: 6px;
-            font-size: 0.85rem; font-weight: 600; padding: 4px 12px;
-            border-radius: 20px; margin-bottom: 15px;
-        }
-        .stock-available { background: #e6f7ed; color: #1f9254; }
-        .stock-empty { background: #fce8e6; color: #cc3300; }
-
-        .detail-card h2 { font-size: 2rem; margin-bottom: 15px; color: var(--primary); }
-        .tabs-content { margin-top: 25px; line-height: 1.7; color: #555; }
-        
-        .spec-table {
-            width: 100%; border-collapse: collapse; margin-top: 15px;
-        }
-        .spec-table td {
-            padding: 12px 0; border-bottom: 1px solid rgba(0,0,0,0.08); font-size: 0.95rem;
-        }
-        .spec-table td:first-child { font-weight: 600; color: var(--primary); width: 40%; }
-
-        /* Features Section */
-        .features-section {
-            background: var(--gray-light); padding: 60px 20px; text-align: center;
-        }
-        .section-title {
-            font-size: 2rem; color: var(--primary); margin-bottom: 40px; font-weight: 700;
-            position: relative; padding-bottom: 10px;
-        }
-        .section-title::after {
-            content:''; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%);
-            width: 60px; height: 3px; background: var(--secondary);
-        }
-        
-        .features-grid {
-            max-width: 1200px; margin: 0 auto;
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px;
-        }
-        .feature-card {
-            background: white; padding: 30px; border-radius: 12px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.02); transition: var(--transition);
-        }
-        .feature-card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.08); }
-        .feature-icon {
-            width: 60px; height: 60px; background: rgba(10,37,64,0.05);
-            color: var(--primary); border-radius: 50%; display: flex;
-            justify-content: center; align-items: center; margin: 0 auto 20px;
-            font-size: 1.5rem; transition: var(--transition);
-        }
-        .feature-card:hover .feature-icon { background: var(--primary); color: var(--secondary); }
-
-        /* Testimonials Carousel */
-        .testimonials-section {
-            padding: 80px 20px; max-width: 800px; margin: 0 auto; text-align: center;
-            overflow: hidden; position: relative;
-        }
-        .carousel-track-container { overflow: hidden; position: relative; width: 100%; }
-        .carousel-track {
-            display: flex; transition: transform 0.5s ease-in-out; width: 100%;
-        }
-        .testimonial-slide {
-            min-width: 100%; padding: 20px; box-sizing: border-box;
-        }
-        .testi-card {
-            background: white; border-radius: 16px; padding: 40px 30px;
-            box-shadow: 0 10px 35px rgba(0,0,0,0.05); border: 1px solid rgba(0,0,0,0.03);
-        }
-        .testi-avatar {
-            width: 80px; height: 80px; border-radius: 50%; object-fit: cover;
-            margin-bottom: 15px; border: 3px solid var(--secondary);
-        }
-        .testi-stars { color: #ffcc00; margin-bottom: 15px; }
-        .testi-text { font-style: italic; color: #444; margin-bottom: 20px; font-size: 1.1rem; line-height: 1.6; }
-        .testi-name { font-weight: 600; color: var(--primary); }
-        .testi-city { font-size: 0.85rem; color: #888; }
-
-        /* Checkout Form & Summary Grid */
-        .checkout-container {
-            max-width: 1200px; margin: 0 auto 80px; padding: 0 20px;
-            display: grid; grid-template-columns: 1fr; gap: 40px;
-        }
-        @media(min-width: 992px) {
-            .checkout-container { grid-template-columns: 1.2fr 1fr; gap: 50px; }
-        }
-
-        .form-card {
-            background: white; padding: 40px 30px; border-radius: 16px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.04); border: 1px solid rgba(0,0,0,0.05);
-        }
-        .form-card h3, .summary-card h3 {
-            font-size: 1.5rem; color: var(--primary); margin-bottom: 25px; font-weight: 600;
-        }
-        
-        .form-group { margin-bottom: 20px; }
-        .form-group label {
-            display: block; font-size: 0.9rem; font-weight: 500;
-            margin-bottom: 8px; color: var(--primary);
-        }
-        .form-control {
-            width: 100%; padding: 12px 16px; border-radius: 8px;
-            border: 1px solid #dcdcdc; font-size: 1rem; transition: var(--transition);
-            background: var(--gray-light);
-        }
-        .form-control:focus {
-            outline: none; border-color: var(--primary); background: white;
-            box-shadow: 0 0 0 3px rgba(10,37,64,0.1);
-        }
-        textarea.form-control { resize: vertical; min-height: 100px; }
-
-        /* Glassmorphism Summary Card */
-        .summary-card {
-            background: rgba(10, 21, 64, 0.03);
-            backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
-            padding: 40px 30px; border-radius: 16px;
-            border: 1px solid rgba(10, 37, 64, 0.08);
-            align-self: start; position: sticky; top: 100px;
-        }
-        .summary-line {
-            display: flex; justify-content: space-between; padding: 14px 0;
-            border-bottom: 1px dashed rgba(0,0,0,0.1); font-size: 0.95rem;
-        }
-        .summary-line.total-line {
-            border-bottom: none; font-weight: 700; font-size: 1.3rem;
-            color: var(--primary); padding-top: 20px;
-        }
-
-        /* Call To Action Lower Section */
-        .cta-section {
-            background: var(--primary); color: white; text-align: center;
-            padding: 80px 20px; position: relative;
-        }
-        .cta-section h2 { font-size: 2.5rem; margin-bottom: 20px; }
-        .cta-section p { color: rgba(255,255,255,0.8); margin-bottom: 35px; font-size: 1.1rem; }
-
-        /* Social Share Utility Bar */
-        .share-container {
-            margin-top: 25px; display: flex; justify-content: center; gap: 10px; flex-wrap: wrap;
-        }
-        .share-btn {
-            padding: 8px 16px; border-radius: 20px; font-size: 0.85rem; color: white;
-            text-decoration: none; display: inline-flex; align-items: center; gap: 8px;
-            transition: var(--transition); font-weight: 500; cursor: pointer; border: none;
-        }
-        .share-wa { background: #25D366; }
-        .share-fb { background: #1877F2; }
-        .share-tg { background: #0088cc; }
-        .share-link { background: #6c757d; }
-        .share-btn:hover { opacity: 0.9; transform: translateY(-2px); }
-
-        /* Floating Widgets */
-        .floating-action-group {
-            position: fixed; bottom: 30px; right: 30px;
-            display: flex; flex-direction: column; gap: 12px; z-index: 999;
-        }
-        .float-btn {
-            width: 50px; height: 50px; border-radius: 50%;
-            display: flex; justify-content: center; align-items: center;
-            color: white; font-size: 1.3rem; text-decoration: none;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.15); transition: var(--transition);
-            cursor: pointer; border: none;
-        }
-        .btn-float-wa { background: #25D366; }
-        .btn-float-scroll { background: var(--primary); display: none; }
-        .float-btn:hover { transform: scale(1.1); }
-
-        /* Footer */
-        footer {
-            background: #061726; color: rgba(255,255,255,0.5);
-            text-align: center; padding: 25px 20px; font-size: 0.85rem;
-            border-top: 1px solid rgba(255,255,255,0.05);
-        }
-
-        /* Responsive Improvements */
-        @media(max-width: 768px) {
-            .hero-content h1 { font-size: 2rem; }
-            .section-title { font-size: 1.6rem; }
-            .detail-card, .form-card, .summary-card { padding: 20px; }
-            .hero-btns .btn { width: 100%; justify-content: center; }
-        }
+        /* Toast Notification */
+        .toast { position: fixed; bottom: 90px; left: 50%; transform: translateX(-50%) translateY(100px); background: #333; color: white; padding: 10px 20px; border-radius: 30px; font-size: 9.5pt; opacity: 0; transition: all 0.4s ease; z-index: 10000; box-shadow: 0 5px 15px rgba(0,0,0,0.3); pointer-events: none; text-align: center; width: max-content; max-width: 90%; }
+        .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
     </style>
 </head>
 <body>
 
-    <div id="page-loader">
+    <div id="preloader">
         <div class="spinner"></div>
+        <div class="blink-text">MEMUAT TOKO RESMI...</div>
     </div>
 
-    <div id="error-notification">
-        <i class="fas fa-exclamation-circle"></i> <span id="error-msg">Gagal mengambil data dari server.</span>
-    </div>
-
-    <header>
-        <div class="nav-container">
-            <div class="logo" id="nav-brand-name"><div class="skeleton" style="width:120px; height:24px; border-radius:4px;"></div></div>
-            <a href="#order-form" class="sticky-btn">Beli Sekarang</a>
-        </div>
-    </header>
-
-    <section class="hero-section" id="hero-bg">
-        <div class="hero-overlay"></div>
-        <div class="hero-content">
-            <span class="badge-promo" id="hero-badge">Promo Spesial</span>
-            <h1 id="hero-title"><div class="skeleton" style="width:80%; height:40px; margin:0 auto 15px; border-radius:6px;"></div><div class="skeleton" style="width:60%; height:40px; margin:0 auto; border-radius:6px;"></div></h1>
-            <div class="price-box">
-                <span class="price-original" id="hero-price-original"><div class="skeleton" style="width:90px; height:24px; border-radius:4px;"></div></span>
-                <span class="price-promo" id="hero-price-promo"><div class="skeleton" style="width:140px; height:35px; border-radius:4px;"></div></span>
-            </div>
-            <div class="hero-btns">
-                <a href="#order-form" class="btn btn-primary"><i class="fas fa-shopping-cart"></i> Beli Sekarang</a>
-                <a href="#order-form" class="btn btn-outline" id="btn-contact-admin"><i class="fab fa-whatsapp"></i> Hubungi Admin</a>
-            </div>
-        </div>
-    </section>
-
-    <main class="main-layout">
+    <div class="container">
         
-        <section class="left-column">
-            <div class="gallery-container">
-                <div class="main-img-wrapper" id="main-gallery-trigger">
-                    <img id="main-product-img" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1 1'%3E%3C/svg%3E" alt="Main Product Image">
-                </div>
-                <div class="thumbnails-grid" id="product-thumbs-container">
-                    <div class="thumb-box skeleton"></div>
-                    <div class="thumb-box skeleton"></div>
-                    <div class="thumb-box skeleton"></div>
-                    <div class="thumb-box skeleton"></div>
-                </div>
-            </div>
-
-            <div class="detail-card" style="margin-top: 40px;">
-                <span class="stock-status stock-available" id="product-stock-status"><i class="fas fa-check-circle"></i> Stok Tersedia</span>
-                <h2 id="details-title">Detail Produk</h2>
-                <div class="tabs-content">
-                    <h4 style="color: var(--primary); margin-bottom: 8px; font-weight:600;">Deskripsi</h4>
-                    <p id="details-desc">Sedang memuat data penjelasan lengkap produk...</p>
-                    
-                    <h4 style="color: var(--primary); margin-top: 25px; margin-bottom: 8px; font-weight:600;">Spesifikasi</h4>
-                    <table class="spec-table" id="details-spec-table">
-                        </table>
-                </div>
-            </div>
-        </section>
-
-        <section class="right-column">
-            <div class="detail-card">
-                <h3 style="color: var(--primary); margin-bottom: 20px; font-weight:600;"><i class="fas fa-shield-alt" style="color:var(--secondary);"></i> Keunggulan Utama</h3>
-                <div style="display: flex; flex-direction: column; gap: 20px;" id="dynamic-features-list">
-                    <div class="skeleton" style="width:100%; height:50px; border-radius:8px;"></div>
-                    <div class="skeleton" style="width:100%; height:50px; border-radius:8px;"></div>
-                </div>
-            </div>
-        </section>
-
-    </main>
-
-    <section class="features-section">
-        <h2 class="section-title">Mengapa Harus Memilih Kami?</h2>
-        <div class="features-grid">
-            <div class="feature-card">
-                <div class="feature-icon"><i class="fas fa-truck"></i></div>
-                <h3>Pengiriman Cepat</h3>
-                <p>Layanan logistik prioritas amanah langsung dikirim ke alamat rumah Anda.</p>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon"><i class="fas fa-ribbon"></i></div>
-                <h3>Kualitas Premium</h3>
-                <p>Seluruh produk melewati tahapan QC ketat demi menjamin kepuasan pelanggan.</p>
-            </div>
-            <div class="feature-card">
-                <div class="feature-icon"><i class="fas fa-headset"></i></div>
-                <h3>Layanan 24/7</h3>
-                <p>Customer service kami selalu ramah membantu operasional transaksi Anda.</p>
-            </div>
+        <div class="hero" id="heroBg">
+            <span class="hero-badge" id="tokoNameBadge">OFFICIAL STORE</span>
+            <h1 class="hero-title" id="productTitle">Nama Produk Eksklusif</h1>
         </div>
-    </section>
 
-    <section class="testimonials-section">
-        <h2 class="section-title">Apa Kata Mereka?</h2>
-        <div class="carousel-track-container">
-            <div class="carousel-track" id="testimonial-track">
-                <div class="testimonial-slide">
-                    <div class="testi-card">
-                        <div class="skeleton" style="width:80px; height:80px; border-radius:50%; margin:0 auto 15px;"></div>
-                        <div class="skeleton" style="width:150px; height:20px; margin:0 auto 10px;"></div>
-                        <div class="skeleton" style="width:80%; height:15px; margin:0 auto 5px;"></div>
-                        <div class="skeleton" style="width:60%; height:15px; margin:0 auto;"></div>
+        <div class="main-content">
+            <div class="product-price" id="productPriceDisplay">Rp 0</div>
+            <p class="product-desc" id="productDesc">Memuat deskripsi produk lengkap dari pusat data...</p>
+
+            <div class="media-slider" id="mediaSlider">
+                </div>
+
+            <div class="section-card">
+                <div class="section-title">Pilih Variasi Produk</div>
+                <div class="form-group">
+                    <select class="form-control" id="variantSelect" onchange="updateSelectedVariant()">
+                        </select>
+                </div>
+                <div class="form-group" style="margin-top: 15px;">
+                    <label>Jumlah Pembelian</label>
+                    <div class="qty-container">
+                        <button class="qty-btn" onclick="adjustQuantity(-1)">-</button>
+                        <input type="number" class="qty-input" id="qtyInput" value="1">
+                        <button class="qty-btn" onclick="adjustQuantity(1)">+</button>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
 
-    <div class="checkout-container" id="order-form">
-        
-        <div class="form-card">
-            <h3><i class="fas fa-clipboard-list"></i> Form Pemesanan</h3>
-            <form id="purchase-form">
+            <div class="section-card">
+                <div class="section-title">Keunggulan Produk</div>
+                <ul class="feature-list" id="productFeatures">
+                    </ul>
+            </div>
+
+            <div class="section-card" id="formPemesanan">
+                <div class="section-title">Formulir Pengiriman Pesanan</div>
                 <div class="form-group">
-                    <label for="input-name">Nama Lengkap *</label>
-                    <input type="text" id="input-name" class="form-control" placeholder="Masukkan nama lengkap Anda" required>
+                    <label>Nama Penerima</label>
+                    <input type="text" class="form-control" id="formNama" placeholder="Contoh: Andi Wijaya">
                 </div>
                 <div class="form-group">
-                    <label for="input-phone">Nomor WhatsApp *</label>
-                    <input type="tel" id="input-phone" class="form-control" placeholder="Contoh: 081234567xxx" required>
+                    <label>Nomor WhatsApp (HP)</label>
+                    <input type="tel" class="form-control" id="formHP" placeholder="Contoh: 081234567xxx">
                 </div>
                 <div class="form-group">
-                    <label for="input-address">Alamat Pengiriman Lengkap *</label>
-                    <textarea id="input-address" class="form-control" placeholder="Tulis jalan, nomor rumah, RT/RW, kecamatan, kota/kabupaten" required></textarea>
+                    <label>Alamat Lengkap Rumah</label>
+                    <textarea class="form-control" id="formAlamat" rows="3" placeholder="Nama Jalan, Blok, No. Rumah, Kecamatan, Kota/Kabupaten"></textarea>
                 </div>
                 <div class="form-group">
-                    <label for="input-qty">Jumlah Pesanan *</label>
-                    <input type="number" id="input-qty" class="form-control" value="1" min="1" required>
+                    <label>Catatan Tambahan (Opsional)</label>
+                    <input type="text" class="form-control" id="formCatatan" placeholder="Warna cadangan, patokan rumah, dll.">
                 </div>
-                <div class="form-group">
-                    <label for="input-notes">Catatan Tambahan (Opsional)</label>
-                    <textarea id="input-notes" class="form-control" placeholder="Warna, ukuran cadangan, atau instruksi kurir"></textarea>
+                
+                <button class="btn-primary" style="margin-top: 20px;" onclick="prosesTransaksi()">
+                    <i class="fab fa-whatsapp"></i> PESAN SEKARANG VIA WHATSAPP
+                </button>
+            </div>
+
+            <div class="section-card">
+                <div class="section-title">Layanan & Kepercayaan Toko</div>
+                <ul class="feature-list" id="storeFeatures">
+                    </ul>
+            </div>
+
+            <button class="btn-secondary" onclick="shareLandingPage()">
+                <i class="fas fa-share-alt"></i> Bagikan Landing Page Toko Ini
+            </button>
+
+            <div class="social-container" id="socialLinks">
                 </div>
-            </form>
+
         </div>
 
-        <div class="summary-card">
-            <h3><i class="fas fa-receipt"></i> Ringkasan Pesanan</h3>
-            <div class="summary-line">
-                <span>Produk</span>
-                <span id="summary-product-name" style="font-weight: 500; text-align: right; max-width: 60%;">Loading...</span>
+        <div class="basket-summary-panel">
+            <div class="basket-info">
+                <span class="basket-label" id="basketLabelItem">1 Item Terpilih</span>
+                <span class="basket-total" id="basketTotalPrice">Rp 0</span>
             </div>
-            <div class="summary-line">
-                <span>Harga Satuan</span>
-                <span id="summary-product-price">Rp 0</span>
-            </div>
-            <div class="summary-line">
-                <span>Jumlah</span>
-                <span id="summary-qty">1 Pcs</span>
-            </div>
-            <div class="summary-line">
-                <span>Subtotal</span>
-                <span id="summary-subtotal">Rp 0</span>
-            </div>
-            <div class="summary-line total-line">
-                <span>Total Pembayaran</span>
-                <span id="summary-total">Rp 0</span>
-            </div>
-            
-            <button type="button" id="btn-submit-checkout" class="btn btn-primary" style="width: 100%; justify-content: center; margin-top: 25px; font-size: 1.1rem; padding: 16px;">
-                <i class="fab fa-whatsapp"></i> Beli Sekarang via WhatsApp
+            <button class="basket-btn" onclick="scrollToForm()">
+                Beli Sekarang <i class="fas fa-shopping-bag"></i>
             </button>
         </div>
+
     </div>
 
-    <section class="cta-section">
-        <h2 id="cta-headline">Miliki Sekarang Juga!</h2>
-        <p>Jangan lewatkan penawaran terbatas ini. Klik tombol di bawah untuk pesan instan.</p>
-        <a href="#order-form" class="btn btn-primary" style="font-size: 1.2rem; padding: 16px 40px;"><i class="fas fa-shopping-bag"></i> Ambil Promo Sekarang</a>
-        
-        <div class="share-container">
-            <button class="share-btn share-wa" onclick="sharePage('wa')"><i class="fab fa-whatsapp"></i> WhatsApp</button>
-            <button class="share-btn share-fb" onclick="sharePage('fb')"><i class="fab fa-facebook-f"></i> Facebook</button>
-            <button class="share-btn share-tg" onclick="sharePage('tg')"><i class="fab fa-telegram-plane"></i> Telegram</button>
-            <button class="share-btn share-link" onclick="copyPageLink()"><i class="fas fa-link"></i> <span id="copy-btn-text">Salin Tautan</span></button>
-        </div>
-    </section>
-
-    <div class="lightbox" id="global-lightbox">
-        <span class="lightbox-close" id="global-lightbox-close">&times;</span>
-        <img id="lightbox-img" src="" alt="Lightbox View">
-    </div>
-
-    <div class="floating-action-group">
-        <a href="" id="floating-wa-node" target="_blank" class="float-btn btn-float-wa" title="Hubungi Kami Via WhatsApp"><i class="fab fa-whatsapp"></i></a>
-        <button id="floating-scroll-node" class="float-btn btn-float-scroll" title="Kembali ke Atas"><i class="fas fa-chevron-up"></i></button>
-    </div>
-
-    <footer>
-        <p>&copy; 2026 <span id="footer-brand">Store Digital</span>. All Rights Reserved. Powered by Clean Native System.</p>
-    </footer>
-
-    <script type="application/ld+json" id="json-ld-struct"></script>
+    <div class="toast" id="toastNotification">Teks Info Notifikasi</div>
 
     <script>
-        /**
-         * GLOBAL CONFIGURATION CONFIG INTERFACE
-         * Ganti URL di bawah ini dengan URL endpoint API Google Apps Script Anda.
-         */
-        const SPREADSHEET_JSON_URL = "https://script.google.com/macros/s/AKfycbxeN7HmFXlqfai9GPWbZRTXD2Hrpvm5aRgTVFt_AnBDwuostTlhzlCjgVhVwxWNyxayXQ/exec"; 
+        // 1. VARIABLE GLOBAL SCRIPT INTEGRATION - GANTI DENGAN URL DEPLOY WEB APP ANDA
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx3GrneFAcA_Fbg4NuMU8PVbJwlSbnTi2KZhf7AaYXf_m1xFVwh5H2Y-qzoEtQ_zwJS/exec";
+        
+        // Cache data state lokal aplikasi
+        let dbStoreData = null;
+        let selectedVariant = null;
+        let currentQuantity = 1;
 
-        // State Machine Data Storage Object
-        let appState = {
-            product: {},
-            testimonials: [],
-            activeImageIndex: 1
-        };
-
-        // DOM Elements Repository Initialization
-        const elements = {
-            loader: document.getElementById('page-loader'),
-            errorNotif: document.getElementById('error-notification'),
-            errorMsg: document.getElementById('error-msg'),
-            brandName: document.getElementById('nav-brand-name'),
-            heroBg: document.getElementById('hero-bg'),
-            heroBadge: document.getElementById('hero-badge'),
-            heroTitle: document.getElementById('hero-title'),
-            heroOriginalPrice: document.getElementById('hero-price-original'),
-            heroPromoPrice: document.getElementById('hero-price-promo'),
-            contactAdmin: document.getElementById('btn-contact-admin'),
-            mainImg: document.getElementById('main-product-img'),
-            thumbsContainer: document.getElementById('product-thumbs-container'),
-            stockStatus: document.getElementById('product-stock-status'),
-            detailsDesc: document.getElementById('details-desc'),
-            specTable: document.getElementById('details-spec-table'),
-            featuresList: document.getElementById('dynamic-features-list'),
-            testiTrack: document.getElementById('testimonial-track'),
-            form: document.getElementById('purchase-form'),
-            inputName: document.getElementById('input-name'),
-            inputPhone: document.getElementById('input-phone'),
-            inputAddress: document.getElementById('input-address'),
-            inputQty: document.getElementById('input-qty'),
-            inputNotes: document.getElementById('input-notes'),
-            sumProdName: document.getElementById('summary-product-name'),
-            sumPrice: document.getElementById('summary-product-price'),
-            sumQty: document.getElementById('summary-qty'),
-            sumSubtotal: document.getElementById('summary-subtotal'),
-            sumTotal: document.getElementById('summary-total'),
-            btnCheckout: document.getElementById('btn-submit-checkout'),
-            lightbox: document.getElementById('global-lightbox'),
-            lightboxImg: document.getElementById('lightbox-img'),
-            lightboxClose: document.getElementById('global-lightbox-close'),
-            lightboxTrigger: document.getElementById('main-gallery-trigger'),
-            floatScroll: document.getElementById('floating-scroll-node'),
-            floatWa: document.getElementById('floating-wa-node'),
-            footerBrand: document.getElementById('footer-brand')
-        };
-
-        // Execution Controller lifecycle pipeline
-        window.addEventListener('DOMContentLoaded', () => {
-            initAppListeners();
-            fetchDataFromServer();
+        document.addEventListener("DOMContentLoaded", () => {
+            initAppStoreData();
         });
 
-        // Event Attachment Manager
-        function initAppListeners() {
-            // Live Summary Pipeline Data Binding
-            elements.inputQty.addEventListener('input', updateOrderCalculationsations);
-            elements.inputName.addEventListener('input', updateOrderCalculationsations);
+        // 2. Optimasi Loading Data - Caching LocalStorage & Async Fetch Workflow
+        async function initAppStoreData() {
+            const cacheKey = "single_prod_store_cache";
+            const cachedData = localStorage.getItem(cacheKey);
             
-            // Lightbox UI System Controls
-            elements.lightboxTrigger.addEventListener('click', () => {
-                if(elements.mainImg.src && !elements.mainImg.src.startsWith('data:')) {
-                    elements.lightboxImg.src = elements.mainImg.src;
-                    elements.lightbox.classList.add('active');
+            // Render cepat menggunakan cache lokal terlebih dahulu jika tersedia
+            if (cachedData) {
+                try {
+                    dbStoreData = JSON.parse(cachedData);
+                    renderStoreContent(dbStoreData);
+                    document.getElementById("preloader").style.display = "none";
+                } catch(e) {
+                    localStorage.removeItem(cacheKey);
                 }
-            });
-            elements.lightboxClose.addEventListener('click', () => {
-                elements.lightbox.classList.remove('active');
-            });
-            elements.lightbox.addEventListener('click', (e) => {
-                if(e.target === elements.lightbox) elements.lightbox.classList.remove('active');
-            });
+            }
 
-            // Conversion checkout submit action execution handler
-            elements.btnCheckout.addEventListener('click', processCheckoutSubmission);
+            // Tetap lakukan fetch background ke Google Sheets Apps Script untuk menjamin akurasi data terbaru
+            if (SCRIPT_URL === "URL_WEB_APP_ANDA_DISINI") {
+                showToast("Perhatian: Isi SCRIPT_URL dengan tautan Web App Apps Script Anda.");
+                document.getElementById("preloader").style.display = "none";
+                return;
+            }
 
-            // Floating Scroll Activation
-            window.addEventListener('scroll', () => {
-                if (window.scrollY > 400) {
-                    elements.floatScroll.style.display = 'flex';
-                } else {
-                    elements.floatScroll.style.display = 'none';
-                }
-            });
-            elements.floatScroll.addEventListener('click', () => {
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            });
-        }
-
-        // Remote fetch server microservice connection handler
-        async function fetchDataFromServer() {
             try {
-                const response = await fetch(SPREADSHEET_JSON_URL);
-                if (!response.ok) throw new Error("Jaringan eksternal merespon dengan status tidak aman.");
+                const response = await fetch(SCRIPT_URL);
+                const jsonResult = await response.json();
                 
-                const data = await response.json();
-                
-                // Parsing validasi skema data terstruktur
-                appState.product = data.produk && data.produk.length > 0 ? data.produk[0] : null;
-                appState.testimonials = data.testimoni || [];
-
-                if(!appState.product) throw new Error("Data produk kosong di dalam database internal Spreadsheet.");
-
-                populateInterfaceDOM();
-            } catch (error) {
-                console.error("Data fetching operation failed: ", error);
-                elements.errorMsg.innerText = `Error: ${error.message}. Menggunakan data fallback demonstrasi.`;
-                elements.errorNotif.style.display = 'block';
-                
-                // Inject Fallback Data untuk Keperluan Preview Instan Jika URL Belum Dikonfigurasi
-                loadFallbackMockData();
+                if (jsonResult.status === "success") {
+                    dbStoreData = jsonResult;
+                    // Simpan ke cache lokal browser
+                    localStorage.setItem(cacheKey, JSON.stringify(jsonResult));
+                    // Re-render konten dengan data terbaru dari spreadsheet
+                    renderStoreContent(dbStoreData);
+                } else {
+                    console.error("Gagal memuat database:", jsonResult.message);
+                }
+            } catch (err) {
+                console.error("Network error API database:", err);
+                showToast("Gagal menyinkronkan data terbaru dari server.");
             } finally {
-                // Sembunyikan element loader dengan transisi halus
-                elements.loader.style.opacity = '0';
-                setTimeout(() => elements.loader.style.display = 'none', 500);
+                document.getElementById("preloader").style.display = "none";
             }
         }
 
-        // Interface Render DOM Operations Node Tree Injection
-        function populateInterfaceDOM() {
-            const prod = appState.product;
+        // 3. Render Pemetaan Data Spreadsheet Ke Elemen User Interface HTML
+        function renderStoreContent(data) {
+            const config = data.config || {};
+            const produk = data.produk || {};
 
-            // Global SEO Metatags Dynamics Refresh
-            document.title = `${prod.nama_produk} - Official Store`;
-            document.querySelector('meta[name="description"]').setAttribute("content", prod.deskripsi.substring(0, 160));
-            document.querySelector('meta[property="og:title"]').setAttribute("content", prod.nama_produk);
-            document.querySelector('meta[property="og:description"]').setAttribute("content", prod.deskripsi.substring(0, 150));
-            if(prod.gambar1) document.querySelector('meta[property="og:image"]').setAttribute("content", prod.gambar1);
-
-            // Core Layout Typography Render bindings
-            elements.brandName.innerText = prod.kategori || "Store Digital";
-            elements.footerBrand.innerText = prod.kategori || "Store Digital";
-            elements.heroBadge.innerText = prod.badge || "PILIHAN TERBAIK";
-            elements.heroTitle.innerText = prod.nama_produk;
-            elements.sumProdName.innerText = prod.nama_produk;
+            // Set Title & Nama Toko
+            document.title = config.NamaToko || "Official Single Product Store";
+            document.getElementById("tokoNameBadge").innerText = config.NamaToko || "OFFICIAL STORE";
+            document.getElementById("productTitle").innerText = produk.Nama || "Nama Produk Eksklusif";
+            document.getElementById("productDesc").innerText = produk.Deskripsi || "";
             
-            // Format Mata Uang Akuntansi
-            elements.heroOriginalPrice.innerText = formatIDRCurrency(prod.harga_asli);
-            elements.heroPromoPrice.innerText = formatIDRCurrency(prod.harga_promo);
-            
-            // Background Configuration Setup
-            if(prod.gambar1) {
-                elements.heroBg.style.backgroundImage = `url('${prod.gambar1}')`;
-                elements.mainImg.src = prod.gambar1;
+            // Set Hero Custom Background
+            if (config.Background) {
+                document.getElementById("heroBg").style.backgroundImage = `linear-gradient(to top, rgba(13,13,13,1) 10%, rgba(13,13,13,0.4) 60%, rgba(13,13,13,0.1)), url('${config.Background}')`;
             }
 
-            // Quick Connection Elements Link Setup
-            const parsedWaNum = cleanWhatsAppPhoneNumber(prod.nomor_wa);
-            elements.contactAdmin.href = `https://wa.me/${parsedWaNum}?text=Halo%20Admin,%20saya%20ingin%20tanya%20detail%20mengenai%20produk%20${encodeURIComponent(prod.nama_produk)}`;
-            elements.floatWa.href = `https://wa.me/${parsedWaNum}?text=Halo%20Admin,%20saya%20ingin%20berkonsultasi%20mengenai%20produk%20${encodeURIComponent(prod.nama_produk)}`;
-
-            // Stock Availability Logic Manager
-            if(String(prod.status_produk).toLowerCase() === 'habis' || parseInt(prod.stok) === 0) {
-                elements.stockStatus.className = "stock-status stock-empty";
-                elements.stockStatus.innerHTML = `<i class="fas fa-times-circle"></i> Stok Habis`;
-                elements.btnCheckout.disabled = true;
-                elements.btnCheckout.innerText = "Stok Habis";
-                elements.btnCheckout.style.background = "#888888";
+            // Render Dropdown Dropdown Pilihan Variasi
+            const variantSelect = document.getElementById("variantSelect");
+            variantSelect.innerHTML = "";
+            if (Array.isArray(produk.Variasi) && produk.Variasi.length > 0) {
+                produk.Variasi.forEach((v, index) => {
+                    const opt = document.createElement("option");
+                    opt.value = index;
+                    opt.innerText = `${v.nama} — (Rp ${v.harga.toLocaleString('id-ID')})`;
+                    variantSelect.appendChild(opt);
+                });
+                selectedVariant = produk.Variasi[0];
             } else {
-                elements.stockStatus.className = "stock-status stock-available";
-                elements.stockStatus.innerHTML = `<i class="fas fa-check-circle"></i> Stok Tersedia (${prod.stok} Pcs)`;
+                // Fallback default jika data JSON variasi kosong/error
+                selectedVariant = { nama: "Default", harga: produk.Harga || 0 };
+                const opt = document.createElement("option");
+                opt.value = 0;
+                opt.innerText = `${produk.Nama} — (Rp ${selectedVariant.harga.toLocaleString('id-ID')})`;
+                variantSelect.appendChild(opt);
             }
 
-            // Description and Specifications Render Parser
-            elements.detailsDesc.innerText = prod.deskripsi;
+            // Render Media Carousel Slider (Lazy Loading + MP4 Video Handler)
+            const mediaSlider = document.getElementById("mediaSlider");
+            mediaSlider.innerHTML = "";
             
-            // Render Dynamic Specs Table
-            if(prod.spesifikasi) {
-                elements.specTable.innerHTML = "";
-                prod.spesifikasi.split(',').forEach(item => {
-                    const parts = item.split(':');
-                    if(parts.length >= 2) {
-                        const row = document.createElement('tr');
-                        row.innerHTML = `<td>${parts[0].trim()}</td><td>${parts[1].trim()}</td>`;
-                        elements.specTable.appendChild(row);
+            // Parse Gambar List (Pemisah Koma)
+            if (produk.Gambar) {
+                const imgUrls = produk.Gambar.split(",");
+                imgUrls.forEach(url => {
+                    if(url.trim()){
+                        const div = document.createElement("div");
+                        div.className = "media-item";
+                        div.innerHTML = `<img src="${url.trim()}" alt="Gambar Produk" loading="lazy">`;
+                        mediaSlider.appendChild(div);
+                    }
+                });
+            }
+            
+            // Tambahkan Video Jika Ada di Spreadsheet
+            if (produk.Video) {
+                const divVideo = document.createElement("div");
+                divVideo.className = "media-item";
+                divVideo.innerHTML = `<video controls loading="lazy" preload="none"><source src="${produk.Video.trim()}" type="video/mp4">Browser Anda tidak mendukung video.</video>`;
+                mediaSlider.appendChild(divVideo);
+            }
+
+            // Render List Fitur Bullet Keunggulan Produk (Pemisah Pipe '|')
+            const productFeatures = document.getElementById("productFeatures");
+            productFeatures.innerHTML = "";
+            if (produk.KeunggulanProduk) {
+                produk.KeunggulanProduk.split("|").forEach(feat => {
+                    if(feat.trim()){
+                        const li = document.createElement("li");
+                        li.innerHTML = `<i class="fas fa-check-circle"></i> <span>${feat.trim()}</span>`;
+                        productFeatures.appendChild(li);
                     }
                 });
             }
 
-            // Render Dynamic Features Block Lists
-            if(prod.deskripsi) {
-                elements.featuresList.innerHTML = "";
-                const shortPoints = prod.deskripsi.split(/[.\n]/).filter(t => t.trim().length > 15).slice(0,3);
-                shortPoints.forEach((point, index) => {
-                    const icons = ['fa-star', 'fa-check-shield', 'fa-thumbs-up'];
-                    const wrapper = document.createElement('div');
-                    wrapper.className = "feature-card";
-                    wrapper.style.display = "flex";
-                    wrapper.style.alignItems = "center";
-                    wrapper.style.gap = "15px";
-                    wrapper.style.padding = "15px 20px";
-                    wrapper.innerHTML = `
-                        <div class="feature-icon" style="margin:0; width:40px; height:40px; font-size:1rem;"><i class="fas ${icons[index] || 'fa-check'}"></i></div>
-                        <p style="text-align:left; font-size:0.9rem; font-weight:500; color:var(--primary);">${point.trim()}</p>
-                    `;
-                    elements.featuresList.appendChild(wrapper);
+            // Render List Fitur Bullet Keunggulan Toko (Pemisah Pipe '|')
+            const storeFeatures = document.getElementById("storeFeatures");
+            storeFeatures.innerHTML = "";
+            if (produk.KeunggulanToko) {
+                produk.KeunggulanToko.split("|").forEach(feat => {
+                    if(feat.trim()){
+                        const li = document.createElement("li");
+                        li.innerHTML = `<i class="fas fa-shield-alt"></i> <span>${feat.trim()}</span>`;
+                        storeFeatures.appendChild(li);
+                    }
                 });
             }
 
-            // Gallery Thumbnails Rendering Module
-            elements.thumbsContainer.innerHTML = "";
-            let uniqueImagesFound = false;
-            for(let i=1; i<=4; i++) {
-                const imgSrc = prod[`gambar${i}`];
-                if(imgSrc && imgSrc.trim() !== "") {
-                    uniqueImagesFound = true;
-                    const thumbBox = document.createElement('div');
-                    thumbBox.className = `thumb-box ${i === 1 ? 'active' : ''}`;
-                    thumbBox.innerHTML = `<img src="${imgSrc}" alt="Thumbnail ${i}" loading="lazy">`;
-                    thumbBox.addEventListener('click', () => {
-                        document.querySelectorAll('.thumb-box').forEach(b => b.classList.remove('active'));
-                        thumbBox.classList.add('active');
-                        elements.mainImg.src = imgSrc;
-                    });
-                    elements.thumbsContainer.appendChild(thumbBox);
-                }
-            }
-
-            // Testimonials System Component Processing Engine
-            renderTestimonialsCarousel();
-
-            // Perform Initial Auto Accounting Computation Core
-            updateOrderCalculationsations();
-
-            // Inject SEO JSON-LD Schema
-            injectStructuredJsonLD();
-        }
-
-        // Testimonial Engine Rendering & Dynamic Auto Transition
-        function renderTestimonialsCarousel() {
-            if(appState.testimonials.length === 0) {
-                elements.testiTrack.innerHTML = `
-                    <div class="testimonial-slide">
-                        <div class="testi-card">
-                            <p class="testi-text">Belum ada testimoni produk. Menjadi pembeli pertama sekarang juga!</p>
-                        </div>
-                    </div>`;
-                return;
-            }
-
-            elements.testiTrack.innerHTML = "";
-            appState.testimonials.forEach(item => {
-                const slide = document.createElement('div');
-                slide.className = "testimonial-slide";
-                
-                // Generating Star Character Map Dynamic Elements
-                let starMap = "";
-                const ratingCount = parseInt(item.rating) || 5;
-                for(let r=0; r<5; r++) {
-                    starMap += r < ratingCount ? '<i class="fas fa-star"></i>' : '<i class="far fa-star"></i>';
-                }
-
-                const userAvatar = item.foto_pelanggan || "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&q=80";
-
-                slide.innerHTML = `
-                    <div class="testi-card">
-                        <img src="${userAvatar}" class="testi-avatar" alt="${item.nama_pelanggan}" loading="lazy">
-                        <div class="testi-stars">${starMap}</div>
-                        <p class="testi-text">"${item.isi_testimoni}"</p>
-                        <h4 class="testi-name">${item.nama_pelanggan}</h4>
-                        <span class="testi-city">${item.kota || 'Indonesia'}</span>
-                    </div>
-                `;
-                elements.testiTrack.appendChild(slide);
-            });
-
-            // Start Auto Carousel Movement Loops System
-            let indexPosition = 0;
-            setInterval(() => {
-                indexPosition++;
-                if(indexPosition >= appState.testimonials.length) indexPosition = 0;
-                elements.testiTrack.style.transform = `translateX(-${indexPosition * 100}%)`;
-            }, 5000);
-        }
-
-        // Realtime Transaction Accounting Logic Matrix
-        function updateOrderCalculationsations() {
-            const prod = appState.product;
-            if(!prod.harga_promo) return;
-
-            const baseUnitPrice = parseInt(prod.harga_promo) || 0;
-            const chosenQuantity = parseInt(elements.inputQty.value) || 1;
-
-            const computedTotal = baseUnitPrice * chosenQuantity;
-
-            elements.sumPrice.innerText = formatIDRCurrency(baseUnitPrice);
-            elements.sumQty.innerText = `${chosenQuantity} Pcs`;
-            elements.sumSubtotal.innerText = formatIDRCurrency(computedTotal);
-            elements.sumTotal.innerText = formatIDRCurrency(computedTotal);
-        }
-
-        // Validation Control Logic & WhatsApp Payload Builder Form submission processing pipeline
-        function processCheckoutSubmission() {
-            // Check HTML Standard constraint validation attributes
-            if(!elements.form.checkValidity()) {
-                elements.form.reportValidity();
-                return;
-            }
-
-            const prod = appState.product;
-            const clientName = elements.inputName.value.trim();
-            const clientPhone = elements.inputPhone.value.trim();
-            const clientAddress = elements.inputAddress.value.trim();
-            const chosenQty = elements.inputQty.value;
-            const clientNotes = elements.inputNotes.value.trim() || "-";
-            
-            const basePrice = parseInt(prod.harga_promo) || 0;
-            const totalCost = basePrice * parseInt(chosenQty);
-
-            // Constructing WhatsApp Dynamic String Buffer Layout Structure Matrix
-            const waPayloadString = 
-`Halo Kak,
-Saya ingin memesan produk berikut:
-━━━━━━━━━━
-PRODUK
-━━━━━━━━━━
-Nama Produk:
-${prod.nama_produk}
-Harga:
-${formatIDRCurrency(basePrice)}
-Jumlah:
-${chosenQty} Pcs
-Subtotal:
-${formatIDRCurrency(totalCost)}
-━━━━━━━━━━
-DATA PELANGGAN
-━━━━━━━━━━
-Nama:
-${clientName}
-Nomor HP:
-${clientPhone}
-Alamat:
-${clientAddress}
-Catatan:
-${clientNotes}
-━━━━━━━━━━
-Mohon diproses ya Kak.
-Terima kasih.`;
-
-            const adminPhone = cleanWhatsAppPhoneNumber(prod.nomor_wa);
-            const compiledExternalWaEndpoint = `https://wa.me/${adminPhone}?text=${encodeURIComponent(waPayloadString)}`;
-
-            // Dispatch Order Transmit Redirection Routing Node Operation
-            window.open(compiledExternalWaEndpoint, '_blank');
-        }
-
-        // Utility Data Format Helpers
-        function formatIDRCurrency(numericValue) {
-            return "Rp " + parseInt(numericValue).toLocaleString('id-ID');
-        }
-
-        function cleanWhatsAppPhoneNumber(phoneNumberString) {
-            if(!phoneNumberString) return "6281522664431"; // Default System Fallback Safe Node
-            let cleaned = String(phoneNumberString).replace(/[^0-9]/g, '');
-            if(cleaned.startsWith('0')) {
-                cleaned = '62' + cleaned.substring(1);
-            }
-            return cleaned;
-        }
-
-        // Native System Web Social Native Sharing Subroutine Utilities Interface 
-        function sharePage(networkContextKey) {
-            const pageUrl = encodeURIComponent(window.location.href);
-            const shareTitle = encodeURIComponent(document.title);
-            let targetDestinationUrl = "";
-
-            switch(networkContextKey) {
-                case 'wa': 
-                    targetDestinationUrl = `https://wa.me/?text=${shareTitle}%20${pageUrl}`;
-                    break;
-                case 'fb':
-                    targetDestinationUrl = `https://www.facebook.com/sharer/sharer.php?u=${pageUrl}`;
-                    break;
-                case 'tg':
-                    targetDestinationUrl = `https://t.me/share/url?url=${pageUrl}&text=${shareTitle}`;
-                    break;
-            }
-
-            if(targetDestinationUrl) window.open(targetDestinationUrl, '_blank');
-        }
-
-        function copyPageLink() {
-            const textToCopy = window.location.href;
-            navigator.clipboard.writeText(textToCopy).then(() => {
-                const labelElement = document.getElementById('copy-btn-text');
-                labelElement.innerText = "Tersalin!";
-                setTimeout(() => labelElement.innerText = "Salin Tautan", 2000);
-            }).catch(err => {
-                console.error('Could not copy system link dynamic structure node context: ', err);
-            });
-        }
-
-        // Structured SEO JSON-LD Injector
-        function injectStructuredJsonLD() {
-            const prod = appState.product;
-            const structureNode = {
-                "@context": "https://schema.org/",
-                "@type": "Product",
-                "name": prod.nama_produk,
-                "image": [ prod.gambar1, prod.gambar2 ].filter(Boolean),
-                "description": prod.deskripsi,
-                "offers": {
-                    "@type": "Offer",
-                    "url": window.location.href,
-                    "priceCurrency": "IDR",
-                    "price": prod.harga_promo,
-                    "availability": parseInt(prod.stok) > 0 ? "https://schema.org/InStock" : "https://schema.org/OutOfStock"
-                }
-            };
-            document.getElementById('json-ld-struct').textContent = JSON.stringify(structureNode);
-        }
-
-        // Fallback Mock data engine system to assure operational deployment testing consistency
-        function loadFallbackMockData() {
-            appState.product = {
-                id: "P001",
-                nama_produk: "Smartwatch Premium X-Pro Edition",
-                harga_asli: "1299000",
-                harga_promo: "799000",
-                deskripsi: "Nikmati kemudahan memantau kesehatan dan notifikasi instan langsung dari pergelangan tangan Anda. Dilengkapi layar AMOLED tajam, sertifikasi anti air IP68, baterai tahan hingga 14 hari kerja aktif berkelanjutan, dan sinkronisasi otomatis via Bluetooth 5.2 ke Android & iOS.",
-                spesifikasi: "Layar: 1.43 Inch AMOLED, Baterai: 450 mAh, Konektivitas: Bluetooth 5.2, Sensor: Detak Jantung / Oksigen Darah SpO2 / Kualitas Tidur, Proteksi: Waterproof IP68",
-                kategori: "Anshar Store Digital",
-                stok: "24",
-                status_produk: "Tersedia",
-                gambar1: "https://images.unsplash.com/photo-1546868871-7041f2a55e12?auto=format&fit=crop&w=600&q=80",
-                gambar2: "https://images.unsplash.com/photo-1508685096489-7aacd43bd3b1?auto=format&fit=crop&w=600&q=80",
-                gambar3: "https://images.unsplash.com/photo-1434494878577-86c23bcb06b9?auto=format&fit=crop&w=600&q=80",
-                gambar4: "",
-                nomor_wa: "628123456789",
-                badge: "Best Seller - Hemat 38%",
-                tanggal_update: "2026-06-21"
-            };
-
-            appState.testimonials = [
-                {
-                    nama_pelanggan: "Budi Santoso",
-                    kota: "Makassar",
-                    foto_pelanggan: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&q=80",
-                    rating: "5",
-                    isi_testimoni: "Jam tangannya sangat elegan! Layar AMOLED sangat jernih di bawah sinar matahari langsung. Respon seller Anshar Store cepat dan ramah sekali.",
-                    tanggal: "2026-06-15"
-                },
-                {
-                    nama_pelanggan: "Siti Rahma",
-                    kota: "Jakarta Selatan",
-                    foto_pelanggan: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=150&q=80",
-                    rating: "5",
-                    isi_testimoni: "Baterainya awet banget seminggu pemakaian cuma berkurang sedikit. Pengemasan sangat aman berlapis bubble wrap tebal.",
-                    tanggal: "2026-06-18"
-                }
+            // Render Ikon Sosial Media Penjual
+            const socialLinks = document.getElementById("socialLinks");
+            socialLinks.innerHTML = "";
+            const platforms = [
+                { key: "Facebook", icon: "fab fa-facebook-f" },
+                { key: "Instagram", icon: "fab fa-instagram" },
+                { key: "TikTok", icon: "fab fa-tiktok" },
+                { key: "YouTube", icon: "fab fa-youtube" }
             ];
+            platforms.forEach(p => {
+                if (config[p.key]) {
+                    const a = document.createElement("a");
+                    a.href = config[p.key];
+                    a.className = "social-icon";
+                    a.target = "_blank";
+                    a.innerHTML = `<i class="${p.icon}"></i>`;
+                    socialLinks.appendChild(a);
+                }
+            });
 
-            populateInterfaceDOM();
+            // Jalankan Kalkulasi Harga Final Keranjang Belanja Awal
+            recalculateBasketDisplay();
+        }
+
+        // 4. Manajemen Kalkulasi Keranjang Belanja & Variasi
+        function updateSelectedVariant() {
+            const idx = document.getElementById("variantSelect").value;
+            if (dbStoreData && dbStoreData.produk && Array.isArray(dbStoreData.produk.Variasi)) {
+                selectedVariant = dbStoreData.produk.Variasi[idx];
+            }
+            recalculateBasketDisplay();
+        }
+
+        function adjustQuantity(amount) {
+            currentQuantity += amount;
+            if (currentQuantity < 1) currentQuantity = 1;
+            document.getElementById("qtyInput").value = currentQuantity;
+            recalculateBasketDisplay();
+        }
+
+        function recalculateBasketDisplay() {
+            if (!selectedVariant) return;
+            const totalPrice = selectedVariant.harga * currentQuantity;
+            
+            // Update Tampilan Display di UI Utama & Sticky Bottom Panel Bar
+            document.getElementById("productPriceDisplay").innerText = `Rp ${selectedVariant.harga.toLocaleString('id-ID')}`;
+            document.getElementById("basketLabelItem").innerText = `${currentQuantity}x Pilihan: ${selectedVariant.nama}`;
+            document.getElementById("basketTotalPrice").innerText = `Rp ${totalPrice.toLocaleString('id-ID')}`;
+        }
+
+        function scrollToForm() {
+            document.getElementById("formPemesanan").scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // 5. Fungsi Submit Transaksi Async Post Ke Spreadsheet & Otomatis Redirect WA
+        async function prosesTransaksi() {
+            const nama = document.getElementById("formNama").value.trim();
+            const hp = document.getElementById("formHP").value.trim();
+            const alamat = document.getElementById("formAlamat").value.trim();
+            const catatan = document.getElementById("formCatatan").value.trim();
+
+            if (!nama || !hp || !alamat) {
+                showToast("Mohon lengkapi Nama, Nomor HP, dan Alamat Anda!");
+                return;
+            }
+
+            const totalHarga = selectedVariant.harga * currentQuantity;
+            const namaProduk = dbStoreData.produk.Nama || "Produk";
+
+            // Data Object Payload untuk dikirim ke API doPost Spreadsheet
+            const payloadData = {
+                produk: namaProduk,
+                variasi: selectedVariant.nama,
+                jumlah: currentQuantity,
+                harga: totalHarga,
+                nama: nama,
+                nomor_hp: hp,
+                alamat: alamat,
+                catatan: catatan
+            };
+
+            showToast("Memproses pesanan Anda...");
+
+            // Jalankan Kirim Data Transaksi Secara Sinkron Asinkronous Agar Tidak Mengganggu UX User
+            try {
+                fetch(SCRIPT_URL, {
+                    method: "POST",
+                    body: JSON.stringify(payloadData),
+                    headers: { "Content-Type": "application/json" }
+                });
+            } catch (err) {
+                console.error("Gagal mencatat log transaksi database:", err);
+            }
+
+            // Komposisi Teks Generator WhatsApp Otomatis Sesuai Spesifikasi Format Target
+            const waAdmin = dbStoreData.config.WhatsApp || "6281522664431";
+            const textWA = `Halo Admin, Saya ingin memesan:\n\n` +
+                           `Produk: ${namaProduk} [${selectedVariant.nama}]\n` +
+                           `Jumlah: ${currentQuantity} Item\n` +
+                           `Harga: Rp ${totalHarga.toLocaleString('id-ID')}\n\n` +
+                           `Nama: ${nama}\n` +
+                           `Nomor HP: ${hp}\n` +
+                           `Alamat: ${alamat}\n` +
+                           `Catatan: ${catatan ? catatan : '-'}`;
+
+            const encodedText = encodeURIComponent(textWA);
+            const waRedirectUrl = `https://wa.me/${waAdmin}?text=${encodedText}`;
+
+            // Alihkan user ke link aplikasi WA API
+            setTimeout(() => {
+                window.location.href = waRedirectUrl;
+            }, 800);
+        }
+
+        // 6. Fungsi Share Link Copy Clipboard System
+        function shareLandingPage() {
+            let shareUrl = window.location.href;
+            if (dbStoreData && dbStoreData.config && dbStoreData.config.LinkShare) {
+                shareUrl = dbStoreData.config.LinkShare;
+            }
+
+            navigator.clipboard.writeText(shareUrl).then(() => {
+                showToast("Tautan landing page berhasil disalin ke papan klip!");
+            }).catch(() => {
+                showToast("Gagal menyalin tautan secara otomatis.");
+            });
+        }
+
+        // 7. Global Toast Notification Helper
+        function showToast(message) {
+            const toast = document.getElementById("toastNotification");
+            toast.innerText = message;
+            toast.classList.add("show");
+            setTimeout(() => {
+                toast.classList.remove("show");
+            }, 3000);
         }
     </script>
 </body>
